@@ -13,6 +13,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.SequenceInputStream;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -753,9 +755,51 @@ public class FileUtils {
 
 	}
 
+	/**
+	 * 把文件写到硬盘上
+	 * 
+	 * @param user
+	 */
+	public static void obj2File(User user, String fileName) {
+		ObjectOutputStream outputStream = null;
+		try {
+			outputStream = new ObjectOutputStream(new FileOutputStream(new File(fileName)));
+			outputStream.writeObject(user);
+		} catch (FileNotFoundException e) {
+			AllException.handle(e);
+		} catch (IOException e) {
+			AllException.handle(e);
+		} finally {
+			closeIO(outputStream);
+		}
+	}
+
+	/**
+	 * 读取文件对象数据
+	 * 
+	 * @param fileName
+	 */
+	public static Object readObjFile(String fileName) {
+		ObjectInputStream objectInputStream = null;
+		Object object = null;
+		try {
+			objectInputStream = new ObjectInputStream(new FileInputStream(new File(fileName)));
+			object = objectInputStream.readObject();
+		} catch (FileNotFoundException e) {
+			AllException.handle(e);
+		} catch (IOException e) {
+			AllException.handle(e);
+		} catch (ClassNotFoundException e) {
+			AllException.handle(e);
+		} finally {
+			closeIO(objectInputStream);
+		}
+		return object;
+	}
+
 	public static void main(String[] args) {
 
-
+		
 	}
 
 }
