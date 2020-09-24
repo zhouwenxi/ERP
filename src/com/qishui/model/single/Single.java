@@ -15,10 +15,12 @@ public class Single {
 
 	public static Single getSingle() {
 
-		synchronized (Single.class) {
+		if (single == null) {
+			synchronized (Single.class) {
 
-			if (single == null) {
-				single = new Single();
+				if (single == null) {
+					single = new Single();
+				}
 			}
 		}
 

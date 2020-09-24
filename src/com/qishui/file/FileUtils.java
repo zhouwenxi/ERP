@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.io.SequenceInputStream;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -181,6 +182,21 @@ public class FileUtils {
 				// "C:\\Users\\zhou\\Desktop\\Android基础知识\\" + "_"+file.getName()+"_"+
 				// MD5Util.encrypt(file.getAbsolutePath())+".md");
 			}
+		}
+	}
+
+	
+	public static void listWithSpit(String dir,String spit) {
+
+		File file = new File(dir);
+
+		if (file.isDirectory()) {
+			File[] fileItem = file.listFiles();
+			for (File f : fileItem) {
+				listWithSpit(f.getAbsolutePath(),"| "+spit);
+			}
+		} else {
+			System.out.println(spit+file.getAbsolutePath());
 		}
 	}
 
@@ -760,11 +776,11 @@ public class FileUtils {
 	 * 
 	 * @param user
 	 */
-	public static void obj2File(User user, String fileName) {
+	public static void obj2File(Object object, String fileName) {
 		ObjectOutputStream outputStream = null;
 		try {
 			outputStream = new ObjectOutputStream(new FileOutputStream(new File(fileName)));
-			outputStream.writeObject(user);
+			outputStream.writeObject(object);
 		} catch (FileNotFoundException e) {
 			AllException.handle(e);
 		} catch (IOException e) {
@@ -797,9 +813,32 @@ public class FileUtils {
 		return object;
 	}
 
+	/**
+	 *  打印数据到文本上
+	 * 
+	 * @param path
+	 * @param object
+	 */
+	public static void printFile(String path, Object object) {
+
+		PrintStream printStream = null;
+		try {
+			
+			int[]a=new int[2];
+			System.out.println(a[100]);
+			printStream = new PrintStream(new File(path));
+			printStream.print(object);
+		} catch (Exception e) {
+			AllException.handle(e);
+		} finally {
+			closeIO(printStream);
+		}
+
+	}
+
 	public static void main(String[] args) {
 
-		
+		//listWithSpit("E:\\Java_Ec\\workspace\\QiShuiDemo","|---");
 	}
 
 }
